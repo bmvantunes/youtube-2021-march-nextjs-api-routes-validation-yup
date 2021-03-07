@@ -13,9 +13,10 @@ export function validate(
           req.method === 'POST'
             ? schema
             : schema.concat(object({ id: number().required().positive() }));
+
         req.body = await newSchema
           .camelCase()
-          .validate(req.body, { abortEarly: false });
+          .validate(req.body, { abortEarly: false, stripUnknown: true });
       } catch (error) {
         return res.status(400).json(error);
       }
